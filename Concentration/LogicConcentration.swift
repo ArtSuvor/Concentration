@@ -9,8 +9,33 @@ import Foundation
 
 class LogicConcentration {
     
-    var cards = [ModelCard]()
-    var indexOfOneOnlyFaceUpCard: Int?
+    private(set) var cards = [ModelCard]()
+    private var indexOfOneOnlyFaceUpCard: Int? {
+        get {
+            var foundIndex: Int?
+            //смотрим по всем, есть ли перевернутые
+            for index in cards.indices {
+                if cards[index].isFaceUp {
+                    //если да, смотрим есть ли одна единственная перевернутая
+                    if foundIndex == nil {
+                        //если нет перевернутых, то
+                        foundIndex = index
+                    } else {
+                        //если есть, то обнуляем их
+                        return nil
+                    }
+                }
+            }
+            return foundIndex
+        }
+        set {
+            //смотрим по всем карточкам, есть ли перевернутые
+            for index in cards.indices {
+                //устанавливаем true or false
+                cards[index].isFaceUp = (index == newValue) 
+            }
+        }
+    }
     
 //MARK: - Логика переворачивания карточек
     
@@ -27,17 +52,11 @@ class LogicConcentration {
                     cards[matchingIndex].isMatched = true
                     cards[index].isMatched = true
                 }
-                //если нет, переворачиваем карточку и обнуляем индекс единственно перевернутой
+                //если нет, переворачиваем карточку
                 cards[index].isFaceUp = true
-                indexOfOneOnlyFaceUpCard = nil
             //если это первая перевернутая карточка
             } else {
-                //переворачиваем все карточки в массиве
-                for flipDown in cards.indices {
-                    cards[flipDown].isFaceUp = false
-                }
-                //говорим что карточка перевернута и что она единственная перевернута
-                cards[index].isFaceUp = true
+                //говорим что она единственная перевернута
                 indexOfOneOnlyFaceUpCard = index
             }
         }

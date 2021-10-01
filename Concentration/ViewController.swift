@@ -17,7 +17,11 @@ class ViewController: UIViewController {
     
 //MARK: - Properties
     
-    private lazy var game = LogicConcentration(numberOfPairs: (buttonCollection.count + 1) / 2)
+    private lazy var game = LogicConcentration(numberOfPairs: numberOfPairs)
+    private var numberOfPairs: Int {
+        (buttonCollection.count + 1) / 2
+    }
+    
     private var emojiCollection = ["🚌", "🎲", "🎽", "🌺", "🐒", "🐝", "🦁", "🌒", "❄️", "🍓", "🧊", "🛹", "🎰", "🚀", "🌋"]
     private var emojiDictionary = [Int: String]()
     private var touches = 0 {
@@ -48,7 +52,7 @@ class ViewController: UIViewController {
                 button.setTitle("", for: .normal)
                 button.tintColor = .green
                 if card.isMatched {
-                    button.isHidden = true
+                    button.layer.opacity = 0
                 }
             }
         }
@@ -59,11 +63,22 @@ class ViewController: UIViewController {
         //проверяем есть ли такая в словаре
         if emojiDictionary[card.identifier] == nil {
             //берем рандомный индекс из коллекции
-            let randomIndex = Int(arc4random_uniform(UInt32(emojiCollection.count)))
             //удаляем и добавляем эмоджи по ключу в словарь
-            emojiDictionary[card.identifier] = emojiCollection.remove(at: randomIndex)
+            emojiDictionary[card.identifier] = emojiCollection.remove(at: emojiCollection.count.arc4randomExtension)
         }
         return emojiDictionary[card.identifier] ?? "?"
     }
 }
 
+//MARK: - Extension
+
+extension Int {
+    var arc4randomExtension: Int {
+        if self > 0 {
+            return Int(arc4random_uniform(UInt32(self)))
+        } else if self < 0 {
+            return -Int(arc4random_uniform(UInt32(abs(self))))
+        }
+        return 0
+    }
+}
