@@ -46,8 +46,8 @@ class LogicConcentration {
             if let matchingIndex = indexOfOneOnlyFaceUpCard,
                //и нажимаем ли мы на нее еще раз, то
                matchingIndex != index {
-                //если да, проверяем совпали ли карточки
-                if cards[matchingIndex].identifier == cards[index].identifier {
+                //если да, проверяем совпали ли карточки(метод сравнения описан в модели)
+                if cards[matchingIndex] == cards[index] {
                     //если да, говорим что совпали
                     cards[matchingIndex].isMatched = true
                     cards[index].isMatched = true

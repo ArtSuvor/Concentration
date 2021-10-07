@@ -23,7 +23,7 @@ class ViewController: UIViewController {
     }
     
     private var emojiCollection = ["🚌", "🎲", "🎽", "🌺", "🐒", "🐝", "🦁", "🌒", "❄️", "🍓", "🧊", "🛹", "🎰", "🚀", "🌋"]
-    private var emojiDictionary = [Int: String]()
+    private var emojiDictionary = [ModelCard: String]()
     private var touches = 0 {
         didSet {
             countTapsLabel.text = "Количество нажатий \(touches)"
@@ -61,12 +61,12 @@ class ViewController: UIViewController {
     //выбираем эмоджи
     private func emojiIdentifier(for card: ModelCard) -> String {
         //проверяем есть ли такая в словаре
-        if emojiDictionary[card.identifier] == nil {
+        if emojiDictionary[card] == nil {
             //берем рандомный индекс из коллекции
             //удаляем и добавляем эмоджи по ключу в словарь
-            emojiDictionary[card.identifier] = emojiCollection.remove(at: emojiCollection.count.arc4randomExtension)
+            emojiDictionary[card] = emojiCollection.remove(at: emojiCollection.count.arc4randomExtension)
         }
-        return emojiDictionary[card.identifier] ?? "?"
+        return emojiDictionary[card] ?? "?"
     }
 }
 
