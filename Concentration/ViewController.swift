@@ -12,7 +12,11 @@ class ViewController: UIViewController {
 //MARK: - Outlets
     
     @IBOutlet private var nameLabel: UILabel!
-    @IBOutlet private var countTapsLabel: UILabel!
+    @IBOutlet private var countTapsLabel: UILabel! {
+        didSet{
+            setupTouchesText()
+        }
+    }
     @IBOutlet private var buttonCollection: [UIButton]!
     
 //MARK: - Properties
@@ -26,7 +30,7 @@ class ViewController: UIViewController {
     private var emojiDictionary = [ModelCard: String]()
     private var touches = 0 {
         didSet {
-            countTapsLabel.text = "Количество нажатий \(touches)"
+            setupTouchesText()
         }
     }
     
@@ -67,6 +71,16 @@ class ViewController: UIViewController {
             emojiDictionary[card] = emojiCollection.remove(at: emojiCollection.count.arc4randomExtension)
         }
         return emojiDictionary[card] ?? "?"
+    }
+    
+    //задаем текст лейба тапов
+    private func setupTouchesText() {
+        let attributes: [NSAttributedString.Key: Any] = [
+            .strokeWidth: 3,
+            .strokeColor: UIColor.black]
+        let attributedString = NSAttributedString(string: "Количество нажатий \(touches)", attributes: attributes)
+        
+        countTapsLabel.attributedText = attributedString
     }
 }
 
