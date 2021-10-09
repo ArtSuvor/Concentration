@@ -12,21 +12,7 @@ class LogicConcentration {
     private(set) var cards = [ModelCard]()
     private var indexOfOneOnlyFaceUpCard: Int? {
         get {
-            var foundIndex: Int?
-            //смотрим по всем, есть ли перевернутые
-            for index in cards.indices {
-                if cards[index].isFaceUp {
-                    //если да, смотрим есть ли одна единственная перевернутая
-                    if foundIndex == nil {
-                        //если нет перевернутых, то
-                        foundIndex = index
-                    } else {
-                        //если есть, то обнуляем их
-                        return nil
-                    }
-                }
-            }
-            return foundIndex
+            return cards.indices.filter { cards[$0].isFaceUp }.oneAndOnly
         }
         set {
             //смотрим по всем карточкам, есть ли перевернутые
@@ -70,5 +56,15 @@ class LogicConcentration {
             cards += [card, card]
         }
         cards.shuffle()
+    }
+}
+
+//MARK: - Extension
+
+extension Collection {
+    
+    //если в каунт один элемент, то возвращаем его, если <> то nil
+    var oneAndOnly: Element? {
+        return count == 1 ? first : nil
     }
 }
